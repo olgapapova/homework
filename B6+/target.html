@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=UTF-8>
+    <title>B6+</title>
+  </head>
+  <body>
+    <script>
+
+    function buildWrapper (teg) {
+        let textN="<"+teg;
+        let textS=">";
+        let textK="</"+teg+">";
+        return function wrapper (str, obj) {
+            let mn={ "<": "&lt;",  ">": "&gt;", "'": "&apos;", '"': "&quot;", "&":"&amp;" };
+            function masS (st) {
+                let t="";
+                for ( let i=0; i<st.length; i++ ) {
+                let symb=st[i];
+                if ( symb in mn )
+                    symb=mn[symb];
+                t+=symb;
+                }
+                return t;
+            }
+            let textFin=masS (str);
+            let text=textN; 
+            for ( let k in obj ) {
+                
+                text+= " "+k+"="+"'"+masS (obj[k])+"'";
+            }
+            text+=textS+ textFin+textK;
+            return text;
+        }
+    }
+    var wrapP=buildWrapper("P");
+    console.log (wrapP ("Однажды в студёную зимнюю пору"));
+    console.log (wrapP ("Однажды в студёную зимнюю пору",{lang:"ru"}));
+    console.log (wrapP ("Однажды в <студёную> зимнюю пору"));
+    var wrapH1=buildWrapper("H1");
+    console.log( wrapH1("СТИХИ",{align:"center",title:"M&M's"}));
+
+    </script>
+  </body>
+</html>
